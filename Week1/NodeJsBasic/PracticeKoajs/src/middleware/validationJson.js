@@ -4,12 +4,13 @@ async function productMiddlewareCreateProduct(ctx, next) {
   try {
     const postData = ctx.request.body;
     let schema = yup.object().shape({
-      name: yup.string().required(),
-      img: yup.string().url().required(),
-      price: yup.number().required(),
-      description: yup.string().required(),
-      color: yup.string().required(),
+      // name: yup.string().required(),
+      // img: yup.string().url().required(),
+      // price: yup.number().required(),
+      // description: yup.string().required(),
+      // color: yup.string().required(),
       id: yup.string().required(),
+      // content: yup.string().required(),
     });
 
     await schema.validate(postData);

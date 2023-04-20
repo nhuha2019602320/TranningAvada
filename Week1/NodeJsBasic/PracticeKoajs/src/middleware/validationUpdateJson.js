@@ -5,9 +5,10 @@ async function productInputMiddleware(ctx, next) {
     const postData = ctx.request.body;
     let schema = yup.object().shape({
       name: yup.string(),
-      price: yup.number(),
-      description: yup.string(),
-      color: yup.string(),
+      // price: yup.number(),
+      // description: yup.string(),
+      // color: yup.string(),
+      // content: yup.string().required(),
     });
 
     await schema.validate(postData);

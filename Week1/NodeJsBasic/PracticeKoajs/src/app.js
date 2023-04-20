@@ -1,11 +1,13 @@
 const Koa = require("koa");
 const koaBody = require("koa-body");
-const routes = require("./routes/productRouter.js");
+const routes = require("./routes/todoRouter.js");
 const render = require("koa-ejs");
 const path = require("path");
+const cors = require('@koa/cors');
 const app = new Koa();
 
 app.use(koaBody());
+app.use(cors());
 render(app, {
   root: path.join(__dirname, "views"),
   layout: "/layout/template",

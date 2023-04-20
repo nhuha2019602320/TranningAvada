@@ -1,22 +1,23 @@
 const {
-  add: addProduct,
-  deleteProduct,
-  getProductLists,
-  editProduct,
-  getProduct,
-  getFieldsOfProduct,
-} = require("../../database/productRepository");
+  add,
+  deleteTodo,
+  getTodoLists,
+  editTodo,
+  getTodo,
+  getFieldsOfTodo,
+} = require("../../database/todoRepository");
 
 /**
  *
  * @param {*} ctx
  * @returns
  */
-async function getProducts(ctx) {
+async function getTodos(ctx) {
   try {
     const { limit, sort, fields } = ctx.request.query;
-    const products = getProductLists({ limit, sort, fields });
-    return (ctx.body = products);
+    console.log(ctx.request.query);
+    const todos = getTodoLists({ limit, sort, fields });
+    return (ctx.body = todos);
   } catch (e) {
     ctx.status = 404;
     ctx.body = {
@@ -32,16 +33,18 @@ async function getProducts(ctx) {
  * @param {*} ctx
  * @returns
  */
-async function getProductById(ctx) {
+
+async function getToDoById(ctx) {
   try {
     const { id } = ctx.params;
-    const listFields = ctx.request.query;
-    const currentProduct = getProduct(id);
-    if (currentProduct) {
-      const product = getFieldsOfProduct(currentProduct, id, listFields);
-      ctx.body = product;
-      return product;
-    } 
+    const listFields = ctx.request.query.fields;
+    const currentTodo = getTodo(id);
+    console.log(listFields);
+    if (currentTodo) {
+      const todo = getFieldsOfTodo(currentTodo, listFields);
+      ctx.body = todo;
+      return todo;
+    }
 
     ctx.status = 404;
     ctx.body = {
@@ -62,17 +65,18 @@ async function getProductById(ctx) {
  * @param {*} ctx
  * @returns
  */
-async function updateProduct(ctx) {
+async function updateTodo(ctx) {
   try {
     const { id } = ctx.params;
-    const currentProduct = getProduct(id);
+    const currentTodo = getTodo(id);
 
-    const dataUpdateProduct = ctx.request.body;
+    const dataUpdateTodo = ctx.request.body;
 
-    if (currentProduct) {
-      const products = editProduct(dataUpdateProduct, id);
-      ctx.body = "update success";
-      return products;
+    if (currentTodo) {
+      const todos = editTodo(dataUpdateTodo, id);
+      ctx.body = todos;
+      console.log("todo", todos)
+      return todos;
     }
 
     ctx.status = 404;
@@ -96,17 +100,18 @@ async function updateProduct(ctx) {
  * @param {*} ctx
  * @returns
  */
-async function removeProduct(ctx) {
+async function removeTodo(ctx) {
   try {
     const { id } = ctx.params;
-    const currentProduct = getProduct(id);
-    if (currentProduct) {
-      deleteProduct(id);
+    const currentTodo = getTodo(id);
+    if (currentTodo) {
+      deleteTodo(id);
       return (ctx.body = {
         success: true,
         error: "Delete success",
       });
-    } 
+      // return deleteTodo(id)
+    }
 
     return (ctx.body = {
       success: false,
@@ -128,7 +133,7 @@ async function removeProduct(ctx) {
 async function save(ctx) {
   try {
     const postData = ctx.request.body;
-    addProduct(postData);
+    add(postData);
     ctx.status = 201;
     return (ctx.body = {
       success: true,
@@ -142,9 +147,9 @@ async function save(ctx) {
 }
 
 module.exports = {
-  getProducts,
-  getProductById,
-  updateProduct,
-  removeProduct,
+  getTodos,
+  getToDoById,
+  updateTodo,
+  removeTodo,
   save,
 };

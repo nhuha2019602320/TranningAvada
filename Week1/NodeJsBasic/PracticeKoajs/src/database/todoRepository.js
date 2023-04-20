@@ -66,8 +66,9 @@ function editTodo(dataUpdate, id) {
       }
       return todo;
     });
-    
+    console.log("datachange", currentTodo)
     saveFile(dataChange);
+    // return currentTodo
     return dataChange
   }
 }
